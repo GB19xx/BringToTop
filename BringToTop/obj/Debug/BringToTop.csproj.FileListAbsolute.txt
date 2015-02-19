@@ -1,0 +1,10 @@
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\bin\Debug\BringToTop.dll
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\bin\Debug\BringToTop.pdb
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\bin\Debug\Advanced Combat Tracker.exe
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\bin\Debug\GammaJul.LgLcd.dll
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.csprojResolveAssemblyReference.cache
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.csproj.GenerateResource.Cache
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.dll
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.pdb
+E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.ControlPanel.resources
