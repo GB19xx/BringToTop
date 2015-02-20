@@ -15,7 +15,6 @@ namespace BringToTop
         Label label;
         ControlPanel controlPanel;
 
-        //PluginConfig config;
         internal PluginConfig Config { get; set; }
 
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
@@ -28,7 +27,7 @@ namespace BringToTop
                 pluginScreenSpace.Text = "BringToTop";
 
                 LoadConfig();
-                this.controlPanel = new ControlPanel(this, this.Config);
+                this.controlPanel = new ControlPanel(this);
                 this.controlPanel.Dock = DockStyle.Fill;
                 this.tabPage.Controls.Add(this.controlPanel);
                 
@@ -44,7 +43,6 @@ namespace BringToTop
 
         public void DeInitPlugin()
         {
-            ActGlobals.oFormActMain.OnLogLineRead -= this.controlPanel.oFormActMain_OnLogLineRead; 
             this.controlPanel.Dispose();
             SaveConfig();
 

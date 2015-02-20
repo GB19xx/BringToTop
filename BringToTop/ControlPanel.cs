@@ -11,55 +11,42 @@ using Advanced_Combat_Tracker;
 
 namespace BringToTop
 {
-    public partial class ControlPanel : UserControl
+    public partial class ControlPanel : UserControl,IDisposable
     {
         Regex regexBegun = new Regex(@"(.+ has begun\.$|„.+“ hat begonnen.$|La mission “.+” commence\.$|「.+?」の攻略を開始した。$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        bool isRefresh; 
 
         PluginMain pluginMain;
-        PluginConfig config;
 
-        private bool IsForced { get { return this.checkBoxForce.Checked; } }
-        private List<string> SelectedItems
-        {
-            get
-            {
-                List<string> checkedItems = new List<string>();
-                foreach (ListViewItem checkedItem in listViewProcesses.CheckedItems)
-                {
-                    if (checkedItem.Text.Contains("FFXIVGAME")) continue;
-                    checkedItems.Add(checkedItem.SubItems[1].Text);
-                }
-
-                return checkedItems;
-            }
-        }
-
-        public ControlPanel(PluginMain pluginMain, PluginConfig config)
+        public ControlPanel(PluginMain pluginMain)
         {
             InitializeComponent();
 
             this.pluginMain = pluginMain;
-            this.config = config;
-
-            checkBoxForce.Checked = this.config.IsForcedToRun;
-        }
-
-        protected override void OnCreateControl()
-        {
-            base.OnCreateControl();
             ActGlobals.oFormActMain.OnLogLineRead += this.oFormActMain_OnLogLineRead;
-            this.ParentForm.FormClosing += this.ParentForm_FormClosing;
+
+            checkBoxForce.Checked = pluginMain.Config.IsForcedToRun;
+            RefreshProcess();
         }
 
-        void ParentForm_FormClosing(object sender, FormClosingEventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            ActGlobals.oFormActMain.OnLogLineRead -= this.oFormActMain_OnLogLineRead;
-            pluginMain.Config.IsForcedToRun = this.IsForced;
-            pluginMain.Config.TaskName = this.SelectedItems;
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+                ActGlobals.oFormActMain.OnLogLineRead -= this.oFormActMain_OnLogLineRead;
+            }
+            base.Dispose(disposing);
         }
 
-        internal void oFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
+        #region Private Events
+        private void oFormActMain_OnLogLineRead(bool isImport, LogLineEventArgs logInfo)
         {
+            if (!ActGlobals.oFormActMain.Visible) return;
+
             if (isImport) return;
 
             if (logInfo.logLine.ToLower().Contains("btt"))
@@ -67,7 +54,7 @@ namespace BringToTop
                 // command
                 BringToTop();
             }
-            else if (this.IsForced && (
+            else if (pluginMain.Config.IsForcedToRun && (
                 logInfo.logLine.Contains("begun.") || logInfo.logLine.Contains("begonnen.") ||
                 logInfo.logLine.Contains("commence.") || logInfo.logLine.Contains("の攻略を開始した。")))
             {
@@ -79,7 +66,7 @@ namespace BringToTop
             }
         }
 
-        private void ControlPanel_Load(object sender, EventArgs e)
+        private void buttonRefresh_Click(object sender, EventArgs e)
         {
             RefreshProcess();
         }
@@ -89,6 +76,27 @@ namespace BringToTop
             BringToTop();
         }
 
+        private void listViewProcesses_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (isRefresh) return;
+
+            List<string> checkedItems = new List<string>();
+            foreach (ListViewItem checkedItem in listViewProcesses.CheckedItems)
+            {
+                if (checkedItem.Text.Contains("FFXIVGAME")) continue;
+                checkedItems.Add(checkedItem.SubItems[1].Text);
+            }
+
+            pluginMain.Config.TaskName = checkedItems;
+        }
+
+        private void checkBoxForce_CheckedChanged(object sender, EventArgs e)
+        {
+            pluginMain.Config.IsForcedToRun = checkBoxForce.Checked;
+        }
+        #endregion
+
+        #region Private Methods
         private void BringToTop()
         {
             RefreshProcess();
@@ -105,13 +113,47 @@ namespace BringToTop
                 IntPtr handle = (IntPtr)Int32.Parse(checkedItem.SubItems[2].Text, System.Globalization.NumberStyles.HexNumber);
                 Win32API.BringWindowToTop(handle);
             }
+
+            RefreshProcess();
         }
 
         private void RefreshProcess()
         {
+            isRefresh = true;
+
             listViewProcesses.Items.Clear();
 
             Win32API.EnumWindows(new Win32API.EnumWindowsDelegate(EnumWindowCallBack), IntPtr.Zero);
+
+            ListViewItem ffItem = listViewProcesses.FindItemWithText("FFXIVGAME");
+            if (ffItem != null)
+            {
+                ffItem.BackColor = Color.DarkOrange;
+                ffItem.Checked = true;
+            }
+            string[] uncheckedItem = pluginMain.Config.TaskName.ToArray();
+
+            foreach (ListViewItem list in listViewProcesses.Items)
+            {
+                for (int i = 0; i < pluginMain.Config.TaskName.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(uncheckedItem[i])) continue;
+
+                    var taskName = pluginMain.Config.TaskName[i];
+                    if (list.Text.Contains(taskName) || list.SubItems[1].Text.Contains(taskName))
+                    {
+                        if (list.SubItems[1].Text.Equals(taskName))
+                        {
+                            list.Checked = true;
+
+                            uncheckedItem[i] = string.Empty;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            isRefresh = false;
         }
 
         private int GetZOrder(IntPtr hWnd)
@@ -144,30 +186,11 @@ namespace BringToTop
                 item.SubItems.Add(hWnd.ToString("X"));
                 item.SubItems.Add(GetZOrder(hWnd).ToString());
 
-                if (csb.ToString().Equals("FFXIVGAME"))
-                {
-                    item.BackColor = Color.DarkOrange;
-                    item.Checked = true;
-                }
-                else
-                {
-                    if (this.config.TaskName != null)
-                    {
-                        foreach (string taskName in this.config.TaskName)
-                        {
-                            if (item.Text.Contains(taskName) || item.SubItems[1].Text.Contains(taskName))
-                            {
-                                item.Checked = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-
                 listViewProcesses.Items.Add(item);
             }
 
             return true;
         }
+        #endregion
     }
 }

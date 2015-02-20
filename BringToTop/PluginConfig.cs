@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +18,10 @@ namespace BringToTop
 
             if (System.IO.File.Exists(fileName))
             {
-                //XmlSerializerオブジェクトを作成
-                //オブジェクトの型を指定する
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(PluginConfig));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fileName, false, new System.Text.UTF8Encoding(false)))
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(fileName, new System.Text.UTF8Encoding(false)))
                 {
-                    //シリアル化し、XMLファイルに保存する
-                    serializer.Serialize(sw, config);
+                    config = (PluginConfig)serializer.Deserialize(sr);
                 }
             }
             else
@@ -33,13 +31,12 @@ namespace BringToTop
                 config.TaskName.Add("OverlayForm");
                 config.TaskName.Add("OverlayForm");
             }
-
+            
             return config;
         }
 
         public static void Save(string fileName, PluginConfig config)
         {
-            //XMLファイルに保存する
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(PluginConfig));
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fileName, false, new System.Text.UTF8Encoding(false)))
             {

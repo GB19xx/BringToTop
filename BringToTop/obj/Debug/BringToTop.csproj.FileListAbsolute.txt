@@ -8,3 +8,13 @@ E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.csproj
 E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.dll
 E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.pdb
 E:\Visual Studio 2010\Projects\BringToTop\BringToTop\obj\Debug\BringToTop.ControlPanel.resources
+E:\GitHub\BringToTop\BringToTop\obj\Debug\BringToTop.ControlPanel.resources
+E:\GitHub\BringToTop\BringToTop\obj\Debug\BringToTop.csproj.GenerateResource.Cache
+E:\GitHub\BringToTop\BringToTop\obj\Debug\BringToTop.dll
+E:\GitHub\BringToTop\BringToTop\bin\Debug\BringToTop.dll
+E:\GitHub\BringToTop\BringToTop\bin\Debug\BringToTop.pdb
+E:\GitHub\BringToTop\BringToTop\bin\Debug\Advanced Combat Tracker.exe
+E:\GitHub\BringToTop\BringToTop\bin\Debug\GammaJul.LgLcd.dll
+E:\GitHub\BringToTop\BringToTop\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\GitHub\BringToTop\BringToTop\obj\Debug\BringToTop.pdb
+E:\GitHub\BringToTop\BringToTop\obj\Debug\BringToTop.csprojResolveAssemblyReference.cache

@@ -7,19 +7,6 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// 使用中のリソースをすべてクリーンアップします。
-        /// </summary>
-        /// <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region コンポーネント デザイナーで生成されたコード
 
         /// <summary> 
@@ -66,6 +53,7 @@
             this.listViewProcesses.TabIndex = 1;
             this.listViewProcesses.UseCompatibleStateImageBehavior = false;
             this.listViewProcesses.View = System.Windows.Forms.View.Details;
+            this.listViewProcesses.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewProcesses_ItemChecked);
             // 
             // columnHeaderTitle
             // 
@@ -93,7 +81,7 @@
             this.buttonRefresh.TabIndex = 0;
             this.buttonRefresh.Text = "Refresh";
             this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.ControlPanel_Load);
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // groupBoxProcesses
             // 
@@ -128,6 +116,7 @@
             this.checkBoxForce.TabIndex = 0;
             this.checkBoxForce.Text = "Forced to run at ID start.";
             this.checkBoxForce.UseVisualStyleBackColor = true;
+            this.checkBoxForce.CheckedChanged += new System.EventHandler(this.checkBoxForce_CheckedChanged);
             // 
             // ControlPanel
             // 
@@ -137,7 +126,6 @@
             this.Controls.Add(this.groupBoxProcesses);
             this.Name = "ControlPanel";
             this.Size = new System.Drawing.Size(712, 351);
-            this.Load += new System.EventHandler(this.ControlPanel_Load);
             this.groupBoxProcesses.ResumeLayout(false);
             this.groupBoxOptions.ResumeLayout(false);
             this.groupBoxOptions.PerformLayout();
