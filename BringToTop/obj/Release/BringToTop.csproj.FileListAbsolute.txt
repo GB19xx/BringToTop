@@ -7,3 +7,4 @@ E:\GitHub\BringToTop\BringToTop\obj\Release\BringToTop.ControlPanel.resources
 E:\GitHub\BringToTop\BringToTop\obj\Release\BringToTop.csproj.GenerateResource.Cache
 E:\GitHub\BringToTop\BringToTop\obj\Release\BringToTop.dll
 E:\GitHub\BringToTop\BringToTop\obj\Release\BringToTop.pdb
+E:\GitHub\BringToTop\BringToTop\obj\Release\BringToTop.csprojResolveAssemblyReference.cache

@@ -28,8 +28,8 @@ namespace BringToTop
             {
                 config.IsForcedToRun = true;
                 config.TaskName = new List<string>();
-                config.TaskName.Add("OverlayForm");
-                config.TaskName.Add("OverlayForm");
+                config.TaskName.Add("Overlay");
+                config.TaskName.Add("Overlay");
             }
             
             return config;
